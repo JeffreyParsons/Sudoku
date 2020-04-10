@@ -1,0 +1,93 @@
+* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: monospace;
+}
+
+body {
+     background-color: rgb(28, 100, 158);
+     width: 900px;
+     margin: auto;
+}
+
+.board-title {
+     text-align: center;
+     margin-top: 50px;
+}
+
+#title {
+     color: white;
+     font-size: 50px;
+}
+
+.game-board {
+     margin-top: 50px;
+}
+
+.cell {
+     height: 100px;
+     width: 100px;
+     text-align: center;
+     border: 1px solid gray;
+
+     font-size: 40px;
+     color: gray;
+}
+
+.cell:focus {
+     background-color: lightblue;
+     outline: none;
+}
+
+.cell[readonly] {
+     color: black;
+}
+
+.thick-under {
+     border-bottom: 5px solid black;
+}
+
+.thick-right {
+     border-right: 5px solid black;
+}
+
+.btn-wrapper {
+     text-align: center;
+}
+
+.incorrect {
+     background-color: rgb(241, 170, 170);
+}
+
+.correct {
+     background-color: rgb(199, 254, 199);
+}
+
+#submit-btn {
+     width: 150px;
+     height: 60px;
+     margin-top: 30px;
+     font-size: 18px;
+}
+
+#solve-btn {
+     width: 150px;
+     height: 60px;
+     margin-top: 30px;
+     font-size: 20px;
+}
+
+#newGame-btn {
+     width: 150px;
+     height: 60px;
+     margin-top: 30px;
+     font-size: 20px;
+}
+
+/* Removes arrows from number input fields */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+     -webkit-appearance: none;
+     margin: 0;
+}
