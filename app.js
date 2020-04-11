@@ -3,7 +3,8 @@ const solveBtn = document.getElementById('solve-btn');
 const submitBtn = document.getElementById('submit-btn');
 const newGameBtn = document.getElementById('newGame-btn');
 const titleMessage = document.getElementById('title');
-let solvedClicked = false;
+let solveClicked;
+let submitClicked;
 // Create list of all cells
 let cells = gameboard.children;
 // Create boards needed to play and solve game
@@ -50,6 +51,8 @@ addbuttonHandlers();
 function startGame() {
      generateInitialBoard(board);
      handleInputs(cells);
+     solveClicked = false;
+     submitClicked = false;
      title.innerHTML = 'Sudoku';
      console.log('Game started!');
 }
@@ -135,6 +138,20 @@ function checkAnswer(board) {
      return result;
 }
 
+// Starts a new game
+function newGame() {
+     for (let i = 0; i < board.length; i++) {
+          for (let j = 0; j < board[i].length; j++) {
+               checkingBoard[i][j] = 0;
+               cellBoard[i][j] = 0;
+          }
+     }
+     // Start game
+     startGame(board);
+     solveClicked = false;
+     submitClicked = false;
+}
+
 // Handle cell inputs
 function handleInputs(cells) {
      // loop through each cell - Make sure only numbers can be typed
@@ -171,18 +188,6 @@ function handleInputs(cells) {
      }
 }
 
-function newGame() {
-     for (let i = 0; i < board.length; i++) {
-          for (let j = 0; j < board[i].length; j++) {
-               checkingBoard[i][j] = 0;
-               cellBoard[i][j] = 0;
-          }
-     }
-     // Start game
-     startGame(board);
-     solvedClicked = false;
-}
-
 // Handle button clicks
 function addbuttonHandlers() {
      solveBtn.addEventListener('click', () => {
@@ -191,16 +196,17 @@ function addbuttonHandlers() {
           console.log('Original Board: ', board);
           console.log('Solved Board: ', checkingBoard);
           renderBoard(checkingBoard);
-          solvedClicked = true;
+          solveClicked = true;
      });
 
      submitBtn.addEventListener('click', (e) => {
-          let isCorrect = checkAnswer(checkingBoard);
-          // Prevent submitting after clicking the solution
-          if (solvedClicked) {
-               e.preventDefault();
+          // Prevent submitting after clicking the solution or clicking submit twice
+          if (solveClicked || submitClicked) {
+               console.log('ass');
                return;
           }
+          // Check players answer against the solution and update the boards styles
+          let isCorrect = checkAnswer(checkingBoard);
           if (isCorrect) {
                title.innerHTML = 'Correct!';
                console.log('correct');
@@ -208,6 +214,7 @@ function addbuttonHandlers() {
                title.innerHTML = 'Incorrect!';
                console.log('incorrect');
           }
+          submitClicked = true;
      });
 
      newGameBtn.addEventListener('click', () => {
