@@ -1,28 +1,31 @@
-// Potential API URL
-// http://www.cs.utep.edu/cheon/ws/sudoku/new/size=${9}&level=${1}
+// API link
+// https://github.com/berto/sugoku
 
 const gameboard = document.querySelector('.game-board');
 const solveBtn = document.getElementById('solve-btn');
 const submitBtn = document.getElementById('submit-btn');
 const newGameBtn = document.getElementById('newGame-btn');
 const titleMessage = document.getElementById('title');
+let difficulty = 'random';
 let solveClicked;
 let submitClicked;
 // Create list of all cells
 let cells = gameboard.children;
 // Create boards needed to play and solve game
-let board = [
-     [9, 0, 4, 0, 2, 3, 0, 8, 5],
-     [8, 0, 0, 6, 0, 5, 3, 4, 0],
-     [0, 3, 0, 0, 0, 0, 0, 0, 2],
-     [0, 0, 8, 3, 5, 1, 7, 9, 6],
-     [1, 7, 5, 0, 0, 6, 0, 3, 4],
-     [0, 9, 3, 2, 0, 7, 0, 5, 0],
-     [0, 0, 9, 8, 7, 2, 0, 1, 0],
-     [0, 1, 6, 0, 3, 9, 0, 2, 0],
-     [3, 8, 2, 0, 6, 0, 5, 7, 9],
-];
+let board = [];
+// let board = [
+//      [9, 0, 4, 0, 2, 3, 0, 8, 5],
+//      [8, 0, 0, 6, 0, 5, 3, 4, 0],
+//      [0, 3, 0, 0, 0, 0, 0, 0, 2],
+//      [0, 0, 8, 3, 5, 1, 7, 9, 6],
+//      [1, 7, 5, 0, 0, 6, 0, 3, 4],
+//      [0, 9, 3, 2, 0, 7, 0, 5, 0],
+//      [0, 0, 9, 8, 7, 2, 0, 1, 0],
+//      [0, 1, 6, 0, 3, 9, 0, 2, 0],
+//      [3, 8, 2, 0, 6, 0, 5, 7, 9],
+// ];
 let cellBoard = [
+     // This is the array that holds all of the input fields in their respective posiitons
      [0, 0, 0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -49,21 +52,26 @@ let checkingBoard = [
 // Start the game
 startGame();
 addbuttonHandlers();
-console.log(getRandomBoard());
 
+// Generates a random board using and API call
 async function getRandomBoard() {
      let response = await fetch(
-          `https://sugoku.herokuapp.com/board?difficulty=easy`
+          `https://sugoku.herokuapp.com/board?difficulty=${difficulty}`
      );
      let data = await response.json();
+     // Assing the response to board
      board = data['board'];
+     console.log('Board: ', board);
+     // Generate the board using the response
      generateInitialBoard(board);
+     // Add Event listeners to the inputs
+     handleInputs(cells);
 }
 
 // Starts and sets up the game
 function startGame() {
-     getRandomBoard();
-     handleInputs(cells);
+     getRandomBoard();   // async
+     
      solveClicked = false;
      submitClicked = false;
      title.innerHTML = 'Sudoku';
@@ -132,6 +140,7 @@ function checkAnswer(board) {
      solveBoard(checkingBoard);
      board.forEach((row, i) => {
           row.forEach((cell, j) => {
+               let pos = [i ,j];
                // Check for correct answers - Change the color of cell if correct or incorrect
                if (cellBoard[i][j].readOnly) {
                     // Add no class
@@ -146,9 +155,25 @@ function checkAnswer(board) {
                     cellBoard[i][j].classList.toggle('incorrect');
                     result = false;
                }
+               // if (checkCell(board, Number(cellBoard[i][j].value), pos)) {
+               //      console.log('fits');
+               //      cellBoard[i][j].classList.toggle('correct');
+               // } else {
+               //      console.log('no fit');
+               //      cellBoard[i][j].classList.toggle('incorrect');
+               //      result = false;
+               // }
           });
      });
      return result;
+}
+
+// Checks player inputs against valid placement
+function checkCell(board, num, pos) {
+     if (isValid(board, num, pos)) {
+          return true;
+     }
+     return false;
 }
 
 // Starts a new game
@@ -174,9 +199,8 @@ function handleInputs(cells) {
                if (e.keycode === 9 || e.which === 9) {
                     return;
                }
-               // Prevent default
-               e.preventDefault();
-
+                // Prevent default
+                e.preventDefault();
                // Check if input is readonly
                if (e.target.readOnly) {
                     return;
@@ -204,6 +228,9 @@ function handleInputs(cells) {
 // Handle button clicks
 function addbuttonHandlers() {
      solveBtn.addEventListener('click', () => {
+          if (solveClicked) {
+               return;
+          }
           solveBoard(checkingBoard);
           console.log('-----------------------------------');
           console.log('Original Board: ', board);
