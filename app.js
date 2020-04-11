@@ -1,3 +1,6 @@
+// Potential API URL
+// http://www.cs.utep.edu/cheon/ws/sudoku/new/size=${9}&level=${1}
+
 const gameboard = document.querySelector('.game-board');
 const solveBtn = document.getElementById('solve-btn');
 const submitBtn = document.getElementById('submit-btn');
@@ -8,7 +11,7 @@ let submitClicked;
 // Create list of all cells
 let cells = gameboard.children;
 // Create boards needed to play and solve game
-const board = [
+let board = [
      [9, 0, 4, 0, 2, 3, 0, 8, 5],
      [8, 0, 0, 6, 0, 5, 3, 4, 0],
      [0, 3, 0, 0, 0, 0, 0, 0, 2],
@@ -46,10 +49,20 @@ let checkingBoard = [
 // Start the game
 startGame();
 addbuttonHandlers();
+console.log(getRandomBoard());
+
+async function getRandomBoard() {
+     let response = await fetch(
+          `https://sugoku.herokuapp.com/board?difficulty=easy`
+     );
+     let data = await response.json();
+     board = data['board'];
+     generateInitialBoard(board);
+}
 
 // Starts and sets up the game
 function startGame() {
-     generateInitialBoard(board);
+     getRandomBoard();
      handleInputs(cells);
      solveClicked = false;
      submitClicked = false;
@@ -202,7 +215,6 @@ function addbuttonHandlers() {
      submitBtn.addEventListener('click', (e) => {
           // Prevent submitting after clicking the solution or clicking submit twice
           if (solveClicked || submitClicked) {
-               console.log('ass');
                return;
           }
           // Check players answer against the solution and update the boards styles
