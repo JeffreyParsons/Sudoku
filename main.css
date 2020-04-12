@@ -1,3 +1,8 @@
+:root {
+     --btn-font-size: 15px;
+     --btn-border-radius: 20px;
+}
+
 * {
      margin: 0;
      padding: 0;
@@ -64,26 +69,39 @@ body {
      background-color: rgb(199, 254, 199);
 }
 
-#submit-btn {
+.btn {
+     outline: none;
      width: 150px;
      height: 60px;
      margin-top: 30px;
-     font-size: 18px;
+     font-size: var(--btn-font-size);
+     border-radius: var(--btn-border-radius);
+}
+
+/* #submit-btn {
+     outline: none;
+     width: 150px;
+     height: 60px;
+     margin-top: 30px;
+     font-size: var(--btn-font-size);
+     border-radius: var(--btn-border-radius);
 }
 
 #solve-btn {
      width: 150px;
      height: 60px;
      margin-top: 30px;
-     font-size: 20px;
+     font-size: var(--btn-font-size);
+     border-radius: var(--btn-border-radius);
 }
 
 #newGame-btn {
      width: 150px;
      height: 60px;
      margin-top: 30px;
-     font-size: 20px;
-}
+     font-size: var(--btn-font-size);
+     border-radius: var(--btn-border-radius);
+} */
 
 /* Removes arrows from number input fields */
 input::-webkit-outer-spin-button,
