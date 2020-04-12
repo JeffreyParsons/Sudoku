@@ -6,7 +6,7 @@ const solveBtn = document.getElementById('solve-btn');
 const submitBtn = document.getElementById('submit-btn');
 const newGameBtn = document.getElementById('newGame-btn');
 const titleMessage = document.getElementById('title');
-let difficulty = 'random';
+let difficulty = ['easy', 'medium', 'hard'];
 let solveClicked;
 let submitClicked;
 // Create list of all cells
@@ -55,13 +55,14 @@ addbuttonHandlers();
 
 // Generates a random board using and API call
 async function getRandomBoard() {
+     let random = getRandomInt(3);
      let response = await fetch(
-          `https://sugoku.herokuapp.com/board?difficulty=${difficulty}`
+          `https://sugoku.herokuapp.com/board?difficulty=${difficulty[random]}`
      );
      let data = await response.json();
      // Assing the response to board
      board = data['board'];
-     console.log('Board: ', board);
+     console.log(difficulty[random], 'Board: ', board);
      // Generate the board using the response
      generateInitialBoard(board);
      // Add Event listeners to the inputs
@@ -70,8 +71,8 @@ async function getRandomBoard() {
 
 // Starts and sets up the game
 function startGame() {
-     getRandomBoard();   // async
-     
+     getRandomBoard(); // async
+
      solveClicked = false;
      submitClicked = false;
      title.innerHTML = 'Sudoku';
@@ -96,6 +97,10 @@ function copyBoards(board) {
                count++;
           });
      });
+}
+
+function getRandomInt(max) {
+     return Math.floor(Math.random() * Math.floor(max));
 }
 
 // Renders any board
@@ -140,7 +145,7 @@ function checkAnswer(board) {
      solveBoard(checkingBoard);
      board.forEach((row, i) => {
           row.forEach((cell, j) => {
-               let pos = [i ,j];
+               let pos = [i, j];
                // Check for correct answers - Change the color of cell if correct or incorrect
                if (cellBoard[i][j].readOnly) {
                     // Add no class
@@ -199,8 +204,8 @@ function handleInputs(cells) {
                if (e.keycode === 9 || e.which === 9) {
                     return;
                }
-                // Prevent default
-                e.preventDefault();
+               // Prevent default
+               e.preventDefault();
                // Check if input is readonly
                if (e.target.readOnly) {
                     return;
