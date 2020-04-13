@@ -12,8 +12,6 @@
 
 body {
      background-color: rgb(28, 100, 158);
-     width: 900px;
-     margin: auto;
 }
 
 .board-title {
@@ -24,15 +22,18 @@ body {
 #title {
      color: white;
      font-size: 50px;
+     margin-bottom: 20px;
 }
 
 .game-board {
      margin-top: 50px;
+     width: 900px;
+     margin: auto;
 }
 
 .cell {
-     height: 100px;
-     width: 100px;
+     max-height: 100px;
+     max-width: 100px;
      text-align: center;
      border: 1px solid gray;
 
@@ -59,6 +60,7 @@ body {
 
 .btn-wrapper {
      text-align: center;
+     margin-bottom: 50px;
 }
 
 .incorrect {
@@ -78,34 +80,55 @@ body {
      border-radius: var(--btn-border-radius);
 }
 
-/* #submit-btn {
-     outline: none;
-     width: 150px;
-     height: 60px;
-     margin-top: 30px;
-     font-size: var(--btn-font-size);
-     border-radius: var(--btn-border-radius);
-}
-
-#solve-btn {
-     width: 150px;
-     height: 60px;
-     margin-top: 30px;
-     font-size: var(--btn-font-size);
-     border-radius: var(--btn-border-radius);
-}
-
-#newGame-btn {
-     width: 150px;
-     height: 60px;
-     margin-top: 30px;
-     font-size: var(--btn-font-size);
-     border-radius: var(--btn-border-radius);
-} */
-
 /* Removes arrows from number input fields */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
      -webkit-appearance: none;
      margin: 0;
+}
+
+/* Desktop */
+@media only screen and (max-width: 1200px) {
+     /* body {
+          background-color: blue;
+     } */
+}
+/* Laptop */
+@media only screen and (max-width: 992px) {
+     body {
+          background-color: pink;
+     }
+
+     .game-board {
+          width: 95%;
+
+          display: grid;
+          grid-template-columns: repeat(9, auto);
+          grid-template-rows: repeat(9, auto);
+     }
+
+     .cell {
+     }
+}
+/* Tablet */
+@media only screen and (max-width: 768px) {
+     body {
+          background-color: orange;
+     }
+}
+/* Mobile */
+@media only screen and (max-width: 600px) {
+     body {
+          background-color: green;
+     }
+
+     .game-board {
+          min-width: 375px;
+          width: 99%;
+     }
+
+     .cell {
+          width: 11.1%;
+          height: 11.1%;
+     }
 }
